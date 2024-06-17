@@ -1,0 +1,48 @@
+MN_Nusmin_Rose                  | Kammalthuraya          | 100000      |
+| MHM_Haris                       | Kammalthuraya          | 100000      |
+| Shyamal_Harshana                | Kammalthuraya          | 100000      |
+| Sumith_Presanna_Niroshan        | Kochchikade            | 200000      |
+| Mohomad_Nusmihar                | Pallansena South       | 200000      |
+| Namal_Weweldeniya               | Poruthota              | 150000      |
+| Ravi_Jeewananda                 | Daluwakotuwa East      | 150000      |
+| Pushpa_KaminiDE_Silva           | Daluwakotuwa East      | 150000      |
+| B_Saumya_Winodani_Perera        | Palangathure           | 150000      |
+| Mark_Sujith                     | Palangathure           | 150000      |
+| S_Sewwandi_Preshansa_Rudrigo    | Eththukala             | 150000      |
+| Anton_Grisiyas_Gomas            | Eththukala             | 200000      |
+| Predeep_Chamara_Fernando        | Kattuwa                | 200000      |
+| KC_Kanchana_Weerasingha_Silva   | Dalupotha              | 200000      |
+| M_Ranjith_Sepala_Fernando       | Dalupotha East         | 200000      |
+| Gihan_Fernando                  | Kudapaduwa             | 150000      |
+| Kapila_Nandana_Sulochana_Perera | Kudapaduwa             | 150000      |
+| W_Rani_Rudrigo                  | Kudapaduwa North       | 100000      |
+| Roshan_Fernando                 | Kudapaduwa North       | 100000      |
+| Mayor                           | Wellaweediya North     | 100000      |
+| Emil_Rohan                      | Wellaweediya North     | 100000      |
+| W_Meri_Fernando                 | Wellaweediya South     | 80000       |
+| S_Gaveesha_Gayathree            | Wellaweediya South     | 80000       |
+| Sajith_Mohan                    | Wellaweediya South     | 80000       |
+| Dihara_Randilini                | Periyamulla            | 200000      |
+| V_Mayor                         | Hunupitiya             | 100000      |
+| MB_Mohomad_Ihnzan               | Hunupitiya             | 100000      |
+| K_Dayal_NilangaDE_Silva         | Agurukaramulla         | 200000      |
+| Lakshaji_Jeewanga_Mirendo       | Udayarthoppuwa         | 150000      |
+| Piumi_Renu_Weerasingha          | Udayarthoppuwa         | 150000      |
+| W_Geethani_Fernando             | Munnakkaraya           | 100000      |
+| KS_Newman_Fernando              | Munnakkaraya           | 100000      |
+| Antoni_Jayeweera                | Pitipana North         | 100000      |
+| Jude_Antoni_Gamini              | Pitipana North         | 100000      |
+| Sangeeth_Perera                 | Duwa                   | 200000      |
+| H_Miyula_Padmani                | Kadol Uyana            | 100000      |
+| Roise_Fernando                  | Kadol Uyana            | 100000      |
+| LK_Dipika_Madhuwanthi_Appuhami  | Bolawalana             | 100000      |
+| Manoj_Ruwan                     | Bolawalana             | 100000      |
+| Kristoper_Shrinika_Fernando     | Kurana                 | 100000      |
+| D_Kamal_Ranjith_Mendis          | Kurana                 | 100000      |
+| M_Nimal_Antoni_Dais             | Siriwardene Place      | 200000      |
+| B_Jokinu_Pettric_Fernando       | South Pitipana East    | 80000       |
+| D_Jude_Perera                   | South Pitipana East    | 80000       |
+| S_Nandani_Sedarahetti           | South Pitipana East    | 80000       |
+| Bothalage_Shelton_Fernando      | South Pitipana West    | 200000      |
+| ME_Jude_Ranjith                 | Thalahena Dungalpitiya | 200000      |
+| Raja                            | Kepungoda              | 200000      |

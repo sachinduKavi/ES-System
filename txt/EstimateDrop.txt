@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Estimate</title>
+</head>
+<style>
+    .divisionDrop {
+        background-color: #0b9fa4;
+        color: white;
+        padding: 14px;
+        font-size: 20px;
+        border: none;
+        curser: pointer;
+        box-shadow:5px 10px 5px grey;
+    }
+    
+    #but01 {
+        background-color: #ad5500;
+        color: white;
+        padding: 14px;
+        font-size: 18px;
+        box-shadow: 5px 10px 5px grey;
+    }
+    #div01 {
+        background-image: linear-gradient(#95938c,white);
+        height: 50%;
+        width:100%;
+        position:absolute;
+    
+        top:20%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    table{
+        margin-left:auto;
+        margin-right:auto;
+        position:absolute;
+        top:35%;
+        left:20%;
+    }
+    #div2 {
+        vertival-align: center;
+        background-color: black;
+        width: 10%;
+        height: 6.5%;
+        position: absolute;
+        left: 90%;
+        top: 2%;
+     
+        transition: 1s;
+    }
+
+    #div2:hover {
+            border-style: inset;
+            background-color: #ffffff;
+         
+            transition: 1s;
+     }
+    #p01 {
+        text-decoration: none;
+        font-size: 30px;
+        text-align: center;
+        color: white;
+        transition: 1s;
+    }
+
+        #p01:hover {
+            letter-spacing: 5px;
+            color: black;
+            font-size: 35;
+            transition: 1s;
+        }
+   
+        lable{
+            color:red;
+        }
+    
+</style>
+
+<script>
+    function sub() {
+        var division = document.getElementById('select01').value;
+        var month = document.getElementById('month').value;
+        if (division == "0x" || month =='0x') {
+            document.getElementById("lable01").style = "visibility:visible";
+            return false;
+        } else {
+            alert(division+" 2020-"+month);
+            return true;
+        }
+        window.open('Estimate.php', '_blank', widt = '500px');
+        
+        
+    }
+</script>
+
+
+<body>
+
+    <div id="div01">
+        <form  onsubmit="return sub();" method="POST" action="Estimate.php">
+            <table>
+                <tr>
+                    <td>
+                        <select class="divisionDrop" id="select01" name="division">
+
+                            <option value="0x">Division</option>
+                            <option value='Kammalthuraya'>Kammalthuraya </option>
+                            <option value='Kochchikade'>Kochchikade </option>
+                            <option value='Pallansena South'>Pallansena South </option>
+                            <option value='Poruthota'>Poruthota </option>
+                            <option value='Daluwakotuwa East'>Daluwakotuwa East</option>
+                            <option value='Palangathure'>Palangathure </option>
+                            <option value='Eththukala'>Eththukala </option>
+                            <option value='Kattuwa'>Kattuwa </option>
+                            <option value='Dalupotha'>Dalupotha</option>
+                            <option value='Dalupotha East'>Dalupotha East </option>
+                            <option value='Kudapaduwa'>Kudapaduwa </option>
+                            <option value='Kudapaduwa North'>Kudapaduwa North </option>
+                            <option value='Wellaweediya North'>Wellaweediya North </option>
+                            <option value='Wellaweediya South'>Wellaweediya South </option>
+                            <option value='Periyamulla'>Periyamulla </option>
+                            <option value='Hunupitiya'>Hunupitiya </option>
+                            <option value='Agurukaramulla'>Agurukaramulla </option>
+                            <option value='Udayarthoppuwa'>Udayarthoppuwa </option>
+                            <option value='Munnakkaraya'>Munnakkaraya </option>
+                            <option value='Pitipana North'>Pitipana North </option>
+                            <option value='Duwa'>Duwa </option>
+                            <option value='Kadol Uyana'>Kadol Uyana </option>
+                            <option value='Bolawalana'>Bolawalana </option>
+                            <option value='Kurana'>Kurana </option>
+                            <option value='Siriwardene Place'>Siriwardene Place </option>
+                            <option value='South Pitipana East'>South Pitipana East </option>
+                            <option value='South Pitipana West'>South Pitipana West </option>
+                            <option value='Thalahena Dungalpitiya'>Thalahena Dungalpitiya </option>
+                            <option value='Kepungoda'>Kepungoda</option>
+                            <option value='Kepungoda'>Kepungoda</option>
+                            <option value='Null'>Communal</option>
+                            <option value='All'>All</option>
+
+                        </select>
+                        <br /><br />
+                        <lable style="visibility:hidden;color:red; " id="lable01">**Can Not Be Null</lable>
+                    </td>
+                    <td>
+                        <select class="divisionDrop" id="month" name="month">
+                            <option value="0x">Month</option>
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">Aprial</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                            
+                            
+                            
+
+                        </select>
+                        <br /><br />
+                        <lable style="visibility:hidden;" id="lable02">Invalid</lable>
+                    </td>
+                    <td>
+                        <button type="submit" id="but01">Enter</button>
+                        <br />
+                        <br />
+                        <lable style="visibility:hidden;">dam</lable>
+                    </td>
+
+                </tr>
+            </table>
+
+        </form>
+
+    </div>
+
+
+</body>
+</html>

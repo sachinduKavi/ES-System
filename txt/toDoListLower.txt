@@ -1,0 +1,167 @@
+$conn = new mysqli('localhost', 'root', 'root', "$system_name");
+
+if($conn->connect_error){
+	echo "Error";
+}else{
+	echo "Connected to ".$system_name;
+}
+if(isset($_POST['zonal'])){
+    $zonal = $_POST['zonal'];
+}else{
+    $zonal = 'All';
+}
+
+?>
+
+
+<body>
+<div id='div1'><a href='ComplaintsView.php'>Complaints</a></div>
+<div id='div2'>
+<form action='toDoList.php' method='POST'>
+<select id='dropzone' name='zonal' onchange='this.form.submit()'>
+    <option>All</option>
+    <option>Kochchikade</option>
+    <option>Thalahena</option>
+    <option>Negombo Town</option>
+    <option>Not Specified</option>
+</select>
+</form>
+</div>
+<h1>Complaints - Pending <?php echo $zonal; ?></h2>
+<button id='btn' onclick='print()'><img src='image/printer.jpg' height=40px></button>
+
+<table border=0, cellspacing=5, id='table01'>
+<tr>
+<th>Ref</th>
+<th>Date</th>
+<th>Name of Complainer</th>
+<th width=30>Mobile Telephone</th>
+<th>Rd. Address</th>
+<th>Sub Division</th>
+<th>Bulb Type</th>
+<th>Post No</th>
+<th>Description</th>
+<th>State</th>
+</tr>
+
+<?php
+
+if ($zonal == 'All'){
+    $sql_comp = "SELECT * FROM Complaints WHERE w_state=0 ORDER BY ref_number  DESC";
+}else{
+    $sql_comp = "SELECT * FROM Complaints WHERE w_state=0 AND zone='$zonal' ORDER BY ref_number  DESC";
+} 
+
+$result_comp = $conn->query($sql_comp);
+$count_comp = mysqli_num_rows($result_comp);
+
+$list_tick = array();
+$list_cross = array();
+if($count_comp ==  true){
+    while($row_comp = $result_comp->fetch_assoc()){
+        $ref = $row_comp['ref_number'];
+        echo '<tr>';
+        echo "<td class='cm$ref'>CM".$ref."</td>";
+        echo "<td class='cm$ref'>".$row_comp['dte']."</td>";
+        echo "<td class='cm$ref'>".$row_comp['comp_name']."</td>";
+        echo "<td class='cm$ref'>".wordwrap($row_comp['mobile_num'], 11, '<br>')."</td>";
+        echo "<td class='cm$ref'>".$row_comp['rd_address']."</td>";
+        echo "<td class='cm$ref'>".$row_comp['zone']."</td>";
+        echo "<td class='cm$ref'>".$row_comp['light_type']."</td>";
+        echo "<td class='cm$ref'>".$row_comp['lp_number']."</td>";
+        echo "<td class='cm$ref'>".$row_comp['description']."</td>";
+        echo "<form action='toDoListUpdate.php', method='POST'>";
+        if($row_comp['w_state'] == '1'){
+            echo "<td align='center'><button type='submit' value='$ref' name='ref_num_tick' class='btnc'><img src='Image/tick.png' width='10px'></button></td>";
+            array_push($list_tick, $ref);
+        }else{
+            echo "<td align='center'><button type='submit' value='$ref' name='ref_num_cross' class='btnc'><img src='Image/cross.jpg' width='10px'></button></td>";
+            array_push($list_cross, $ref);
+        }
+        echo "</form>";
+        
+        echo '</tr>';
+    }
+}
+
+
+?>
+
+
+</body>
+</html>
+
+<script>
+var tick = <?php echo json_encode($list_tick)?>;
+var cross = <?php echo json_encode($list_cross)?>;
+
+
+//console.log(tick);
+//console.log(cross);
+
+for(var i in tick){
+    console.log(tick[i]);
+    var class_val = document.getElementsByClassName("cm"+tick[i].toString());
+    console.log(class_val);
+    for(var j = 0; j<class_val.length; j++){
+        class_val[j].style.backgroundColor = '#2B995E';
+    }
+}
+
+for(var i in cross){
+    //console.log(cross[i]);
+    var class_val = document.getElementsByClassName("cm"+cross[i].toString());
+    //console.log(class_val);
+    for(var j = 0; j<class_val.length; j++){
+        class_val[j].style.backgroundColor = '#9E1102';
+    }
+}
+
+// Printer Function ............................
+var print_turn = true;
+function print(){
+    console.log("hello");
+    if (print_turn){
+        document.getElementById("table01").border = 5;
+        document.getElementById("table01").cellSpacing = '3';
+
+        for(var i in cross){
+        console.log(cross[i]);
+        var class_val = document.getElementsByClassName("cm"+cross[i].toString());
+        console.log(class_val);
+        for(var j = 0; j<class_val.length; j++){
+            class_val[j].style.backgroundColor = 'white';
+            class_val[j].style.color = 'black';
+        }
+        }
+        print_turn = false;
+        var btn_list = document.getElementsByClassName("btnc");
+        for(var s = 0; s<btn_list.length; s++){
+            btn_list[s].style.visibility = "hidden";
+        }
+    }else{
+        alert("Refresh the Page")
+    }  
+    }
+
+var zonal = <? echo json_encode($zonal)?>;
+var drop = document.getElementById('dropzone');
+
+// Chaning drop down value to selected value..
+for(var i=0; i<5; i++){
+    if(drop.options[i].value == zonal){
+        drop.selectedIndex = i;
+        console.log(drop.options[i].value);
+        break;
+    }
+}
+
+
+</script>
+
+<style>
+tr:hover{
+    background-color:#9E9A9A;
+    color:white;
+    }
+</style>

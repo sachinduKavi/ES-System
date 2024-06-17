@@ -1,0 +1,7 @@
+</select>";
+
+echo "<input type='submit'>";
+echo "</form>";
+//connection
+
+

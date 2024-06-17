@@ -1,0 +1,256 @@
+$conn = new mysqli('localhost','root','root',"$system_name");
+
+$division = $_POST['bt'];
+
+if($conn->connect_error){
+	echo "Eror 01<br>";
+}else{
+	echo "Connected to ".$system_name."<br><br>";
+}
+
+
+
+//mathree...
+
+
+$sql01 = "SELECT * FROM minister_division_rev where division='$division'";
+
+$result01 = $conn->query($sql01);
+$count01 = mysqli_num_rows($result01);
+
+$TotalMan = 0;
+
+if($count01 ==  true){
+	while($row01 = $result01->fetch_assoc()){
+		
+		$minister = $row01['mname'];
+		
+		echo "<h3>".$minister."</h3>";
+		
+		
+		$sql02 = "SELECT * FROM $minister ORDER BY Dte DESC";
+		
+		$result02 = $conn->query($sql02);
+		$count02 = mysqli_num_rows($result02);
+		if($count02 == true){
+		$manValue = 0;
+		
+		echo "<table border='1' id='customers'><tr>";
+		echo "<th>ID</th>";
+		echo "<th>Date</th>";
+		echo "<th>Electrician</th>";
+		echo "<th>Division</th>";
+		echo "<th>40W LED</th>";
+		echo "<th>40W Set</th>";
+		echo "<th>100W Set</th>";
+		echo "<th>200W LED</th>";
+		echo "<th>125W Holder</th>";
+		echo "<th>250W Bulb</th>";
+		echo "<th>250W Choke</th>";
+		echo "<th>250W Igniter</th>";
+		echo "<th>Switch</th>";
+		echo "<th>TOFF</th>";
+		echo "<th>1/1.13 Wire</th>";
+		echo "<th>7/0.53 Wire</th>";
+		echo "<th>Item</th>";
+		echo "<th>Count</th>";
+		echo "<th>Item</th>";
+		echo "<th>Count</th>";
+		echo "<th>Cost</th>";
+		echo "</tr>";
+		while($row02 = $result02->fetch_assoc()){
+			
+			$rowp =$row02['rowcost'];
+
+			$manValue += $rowp;
+			echo"<tr>";
+			echo "<tr>";
+			echo "<td>ES".$row02['index_num']."</td>";
+			echo "<td>".$row02['dte']."</td>";
+			echo "<td>".$row02['ename']."</td>";
+			echo "<td>".$row02['division']."</td>";
+			echo "<td>".$row02['led40']."</td>";
+			echo "<td>".$row02['set40']."</td>";
+			echo "<td>".$row02['set100']."</td>";
+			echo "<td>".$row02['led200']."</td>";
+			echo "<td>".$row02['holder125']."</td>";
+			echo "<td>".$row02['bulb250']."</td>";
+			echo "<td>".$row02['choke250']."</td>";
+			echo "<td>".$row02['ignitor250']."</td>";
+			echo "<td>".$row02['switch5a']."</td>";
+			echo "<td>".$row02['toff']."</td>";
+			echo "<td>".$row02['wire1']."</td>";
+			echo "<td>".$row02['wire7']."</td>";
+			echo "<td>".$row02['oname1']."</td>";
+			echo "<td>".$row02['oval1']."</td>";	
+			echo "<td>".$row02['oname2']."</td>";
+			echo "<td>".$row02['oval2']."</td>";	
+			echo "<td>Rs.".$row02['rowcost']."</td>";
+			echo "</tr>";
+			echo "</tr>";
+			
+		}
+	echo "</table>";
+	$TotalMan += $manValue;
+	
+	$sql05 = "SELECT * FROM minister_division_rev WHERE mname='$minister'";
+	
+	$result05 = $conn->query($sql05);
+	$count05 = mysqli_num_rows($result05);
+	
+	if($count05 == true){
+		while($row05 = $result05->fetch_assoc()){
+			$mReserved = $row05['reservation'];
+		}
+	}
+	
+	
+	echo "<div id='div03'>Reserved :- Rs.".$mReserved."</div>";
+	if($manValue > $mReserved){
+		echo "<div id='div02' style='background-color:red;'>Total Expenditure :- Rs.".$manValue."</div>";
+	}else{
+	
+	echo "<div id='div02'>Total Expenditure :- Rs.".$manValue."</div>";
+	}
+		
+	}else{
+		
+		echo "<p>No Records</p><br>";
+		
+	}
+		
+	
+
+
+	
+	}
+}
+	
+	//Candidates....
+	
+$CandiVal = 0;
+
+echo "<h3>Candidates</h3>";	
+	$sql04 = "SELECT * FROM Candidates WHERE division='$division' ORDER BY Dte DESC";
+	
+	$result04 = $conn->query($sql04);
+	$count04 = mysqli_num_rows($result04);
+	
+	
+	
+	if($count04 == true){
+		$CandiVal = 0;
+		echo "<table id='customers'>";
+		echo "<tr>";
+		echo "<th>ID</th>";
+		echo "<th>Date</th>";
+		echo "<th>Candidate Name</th>";
+		echo "<th>Electrician</th>";
+		echo "<th>Division</th>";
+		echo "<th>40W LED</th>";
+		echo "<th>40W Set</th>";
+		echo "<th>100W Set</th>";
+		echo "<th>200W LED</th>";
+		echo "<th>125W Holder</th>";
+		echo "<th>250W Bulb</th>";
+		echo "<th>250W Choke</th>";
+		echo "<th>250W Igniter</th>";
+		echo "<th>Switch</th>";
+		echo "<th>TOFF</th>";
+		echo "<th>1/1.13 Wire</th>";
+		echo "<th>7/0.53 Wire</th>";
+		echo "<th>Item</th>";
+		echo "<th>Count</th>";
+		echo "<th>Item</th>";
+		echo "<th>Count</th>";
+		echo "<th>Cost</th>";
+		echo "</tr>";
+		
+		while($row04 = $result04->fetch_assoc()){
+			
+			$rowp2 = $row04['rowcost'];
+
+			
+			echo "<tr>";
+			echo "<td>ES".$row04['index_num']."</td>";
+			echo "<td>".$row04['dte']."</td>";
+			echo "<td>".$row04['cname']."</td>";
+			echo "<td>".$row04['ename']."</td>";
+			echo "<td>".$row04['division']."</td>";
+			echo "<td>".$row04['led40']."</td>";
+			echo "<td>".$row04['set40']."</td>";
+			echo "<td>".$row04['set100']."</td>";
+			echo "<td>".$row04['led200']."</td>";
+			echo "<td>".$row04['holder125']."</td>";
+			echo "<td>".$row04['bulb250']."</td>";
+			echo "<td>".$row04['choke250']."</td>";
+			echo "<td>".$row04['ignitor250']."</td>";
+			echo "<td>".$row04['switch5a']."</td>";
+			echo "<td>".$row04['toff']."</td>";
+			echo "<td>".$row04['wire1']."</td>";
+			echo "<td>".$row04['wire7']."</td>";
+			echo "<td>".$row04['oname1']."</td>";
+			echo "<td>".$row04['oval1']."</td>";	
+			echo "<td>".$row04['oname2']."</td>";
+			echo "<td>".$row04['oval2']."</td>";	
+			echo "<td>Rs.".$row04['rowcost']."</td>";
+			echo "</tr>";
+			
+			$CandiVal += $rowp2;
+			
+		}
+		echo "</table>";
+		echo "<div id='div02'>Total Expenditure:- Rs.".$CandiVal."</div>";
+			
+ 	
+}else{
+	echo "<p>No Candidates</p>";
+}
+
+echo "
+<div id='div2'>
+<center>
+<a href='divisions.php' id='p01'>Divisions</a>
+</center>
+</div>";
+
+$totalExp = $TotalMan;
+
+
+$sql06 = "SELECT * FROM minister_division_rev WHERE division='$division'";
+
+$result06 = $conn->query($sql06);
+$count06 = mysqli_num_rows($result06);
+$dReservation = 0;
+if($count06 == true){
+	while($row06 = $result06->fetch_assoc()){
+		$dReservation += $row06['reservation'];
+	}
+}
+
+echo "<div id='div06'><b>
+<center>
+".$division."<br>
+Rs.".$dReservation."</b></div>";
+
+
+
+if($totalExp>$dReservation){
+echo "<div id='div07' style='background-color:red;'><b>
+<center>
+Expenditure<br>Rs.".$totalExp." </div>";
+}else{
+echo "<div id='div07'><b>
+<center>
+Expenditure<br>Rs.".$totalExp." </div>";
+}
+
+$remainder = $dReservation - $totalExp;
+
+echo "<div id='div08'><b>
+<center>
+Remainder<br>Rs.".$remainder." </div>";
+
+
+$conn->close();
+?>

@@ -1,0 +1,210 @@
+$conn = new mysqli('localhost','root','root',"$system_name");
+
+$DivisionArray = array(
+'Kammalthuraya',
+'Kochchikade',
+'Pallansena South',
+'Poruthota',
+'Daluwakotuwa East',
+'Palangathure',
+'Eththukala',
+'Kattuwa',
+'Dalupotha',
+'Dalupotha East',
+'Kudapaduwa',
+'Kudapaduwa North',
+'Wellaweediya North',
+'Wellaweediya South',
+'Periyamulla',
+'Hunupitiya',
+'Agurukaramulla',
+'Udayarthoppuwa',
+'Munnakkaraya',
+'Pitipana North',
+'Duwa',
+'Kadol Uyana',
+'Bolawalana',
+'Kurana',
+'Siriwardene Place',
+'South Pitipana East',
+'South Pitipana West',
+'Thalahena Dungalpitiya',
+'Kepungoda');
+
+
+$AllCom = 0;
+
+//cheak connection
+if($conn ->connect_error){
+	echo "Error 01";
+}else{
+	echo "Connected to ".$system_name;
+}
+
+$division_id=0;
+echo "<table>";
+$list = array();
+
+for($num = 0; $num<=28; $num++){
+
+$division =$DivisionArray[$num];
+
+//calculate all expenditure from candidates
+$candiValue = 0;
+
+$sql01 = "SELECT * FROM Candidates where division='$division' ORDER BY Dte ASC";
+
+$result01 = $conn->query($sql01);
+$count = mysqli_num_rows($result01);
+
+if($count == true){
+	
+	while($row = $result01->fetch_assoc()){
+		$rowp = $row['rowcost'];
+		$candiValue = $candiValue + $rowp;
+	}
+}
+
+//echo "TC ".$candiValue."-";
+
+//manthreee.
+$manValue = 0;
+
+$sql02 = "SELECT * FROM minister_division_rev where division='$division'";
+
+$result02 = $conn->query($sql02);
+$count02 = mysqli_num_rows($result02);
+
+if($count02 == true){
+	$mTotal = 0;
+	while($row = $result02->fetch_assoc()){
+		//echo $row['mname']."<br>";
+		
+		$minister = $row['mname'];
+		
+		$sql03 = "SELECT * FROM $minister";
+		$result03 = $conn->query($sql03);
+		$count03 = mysqli_num_rows($result03);
+		$TinRow = 0;
+		if($count03 == true){
+			while($inrow = $result03->fetch_assoc()){
+				$mrowp = $inrow['rowcost'];
+				//echo $mrowp."<br>";
+				$TinRow += $mrowp;
+		}
+		//echo "Total In row: ".$TinRow."<br>";
+		$mTotal +=$TinRow;
+	}
+	
+	//echo "Total Mathree : ".$mTotal."<br>";
+	}
+}
+
+
+$TexpDivision = $mTotal;
+
+//echo "Total Expenditiure ". $TexpDivision."<br>";
+
+
+// fetching Resevations..
+$reservation = 0;
+$sql04 = "SELECT * FROM minister_division_rev WHERE division='$division'";
+
+$result04 = $conn->query($sql04);
+$count04 = mysqli_num_rows($result04);
+
+if($count04 == true){
+	while($rowR = $result04->fetch_assoc()){
+		$reservation += $rowR['reservation'];
+	}
+	
+}
+echo "<br>";		
+	
+$Remainder = $reservation -$TexpDivision;
+
+//echo $reservation.'<br>';
+//echo $Remainder;
+
+
+//echo "<br><br><br><hr>";
+echo $reservation."helo";
+if($reservation != 0){
+echo $reservation."helo";
+$ExpPre = 100*$TexpDivision/$reservation;
+}
+if($num%6 == 0){
+	echo "<tr>";
+}
+
+
+
+echo"<form method='post' action='Sdivision.php'>";
+
+
+echo "<td id='d$division_id'><button id='b01' name='bt' value='$division'><img src='Image/i.png' width='18px'></button><center><div id='div4'><a>"
+.$division."</a><br><b>".
+"Reserved : Rs.".number_format($reservation)."<br>".
+"Exp : Rs.".number_format($TexpDivision)." | ".round($ExpPre,2)."%<br>".
+"Remainder : Rs.".number_format($Remainder)."<br>".
+"Communal : Rs.".number_format($candiValue)."
+</b></center></div></td>";
+$AllCom += $candiValue;
+if($Remainder < 0){
+	array_push($list, $division_id);
+	}
+$division_id += 1;
+}
+$totalCandi = 0;
+$sql07 = "SELECT * FROM Candidates";
+$result07 = $conn->query($sql07);
+$count07 = mysqli_num_rows($result07);
+
+if($count07 == true){
+	while($row07 = $result07->fetch_assoc()){
+		$rowp07 =$row07['rowcost'];
+		$totalCandi += $rowp07;
+
+	}
+}
+$cRemainder = 8000000-$totalCandi;
+$cPrecentage =  100*$totalCandi/8000000;
+echo "</form>";
+echo "<td>
+<form action='Display.php' method='post'><button id='b01' name='mname' value='Candidates'><img src='Image/i.png' width='15px'></button>
+<center><div id='div4'><a>
+All Communal</a><b><br>".
+"Reserved : Rs. ".number_format(8000000)."<br>".
+"Exp : Rs.".number_format($totalCandi)." | ".round($cPrecentage,2)."%<br>".
+"Remainder : Rs.".number_format($cRemainder)."<br>
+</b></center></div></td>";
+echo "</tr></table></form>";
+
+
+$conn->close();
+
+
+
+?>
+					
+
+
+<style>
+/*
+table tr:nth-child(3) td:nth-child(4){
+		background-color:red;
+	}
+
+table tr:nth-child(1) td:nth-child(7){
+		background-color:red;
+	}*/
+	</style>
+
+	<script>
+	var num_list = <?php echo json_encode($list); ?>;
+	for(var val in num_list){
+		console.log(num_list[val]);
+		document.getElementById('d'+num_list[val].toString()).style.backgroundColor = '#C20000';
+		document.getElementById('d'+num_list[val].toString()).style.color = 'white';
+	}
+	</script>

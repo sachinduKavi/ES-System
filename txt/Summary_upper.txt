@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Summary</title>
+    <style>
+    th {
+      background-color: #04AA6D;
+      color: white;
+      font-size:20px;
+      padding-left:10px;
+      padding-right:10px;
+    }
+
+    .division{
+        background-color:#c3cbcf;
+        font-size:18px;
+        padding-left:5px;
+        padding-right:5px;
+    }
+    .total{
+        background-color:#46779E;
+        color:white;
+        font-size:19px;
+        padding-left:5px;
+        padding-right:5px;
+    }
+    td{
+        padding-right:5px;
+        padding-left:5px;
+    }
+
+    label{
+        font-weight:bold;
+    }
+    .c2{
+        background-color:#d8e0e5;
+    }
+
+    tr:hover {
+	background-color: #ddd;
+	}
+    //tr:nth-child(odd){background-color: #f2f2f2;}
+
+    #summ{
+        font-size:40px;
+        padding-left:7px;
+        font-weight:bold;
+    }
+    </style>
+
+
+    <?php
+    error_reporting(E_ALL);

@@ -1,0 +1,30 @@
+
+<html>
+<head>
+    <title>Estimate</title>
+</head>
+<?php
+
+error_reporting(E_ALL);
+$LED40 = 0;
+$Set40 = 0;
+$Set100 = 0;
+$LED200 = 0;
+$Bulb250 = 0;
+$choke = 0;
+$Igniter = 0;
+$Holder = 0;
+$Switch5A = 0;
+$TOFF = 0;
+$Wire1 = 0;
+$Wire7 = 0;
+$totalCount  = 0;
+$TCount = 0;
+$w_dates = "";
+
+$division = $_POST['division'];
+$month = $_POST['month'];
+//$division = "Kammalthuraya";
+//$month = "12";
+
+//Declaring name

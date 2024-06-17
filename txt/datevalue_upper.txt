@@ -1,0 +1,43 @@
+<html>
+<head>
+<style>
+	table{
+		font-size:20px;
+		width:90%;
+		font-weight:bold;
+
+	}
+    th {
+      background-color: #04AA6D;
+      color: white;
+      font-size:25px;
+      padding-left:10px;
+      padding-right:10px;
+    }
+	td{
+        padding-right:5px;
+        padding-left:5px;
+    }
+    tr:hover {
+		background-color: #ddd;
+	}
+	h1{
+		font-size:40;
+		color:#024e84;
+	}
+	a{
+		text-decoration:none;
+		font-size:30;
+		color:#2795e4;
+	}
+	img{
+		width:10%;
+		padding-top:20px;
+		padding-left:20px;
+	}
+
+</style>
+<title>Dates</title>
+</head>
+<?php
+error_reporting(E_ALL);

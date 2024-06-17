@@ -1,0 +1,24 @@
+$conn = new mysqli('localhost', 'root', 'root', $system_name);
+
+$val_tick = $_POST['ref_num_tick'];
+$val_cross = $_POST['ref_num_cross'];
+
+if($val_tick == true){
+	echo "ticks";
+
+	$sql_update = "UPDATE Complaints SET w_state=0 where ref_number='$val_tick'";
+
+}else{
+	echo "cross";
+	$sql_update = "UPDATE Complaints SET w_state=1 where ref_number='$val_cross'";
+}
+
+$conn->query($sql_update);
+
+
+ob_start();
+header('Location: ComplaintsView.php');
+ob_end_flush();
+die();
+
+?>

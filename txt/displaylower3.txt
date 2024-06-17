@@ -1,0 +1,206 @@
+$conn = new mysqli('localhost','root','root', "$system_name");
+	
+//check connection...
+
+if($conn-> connect_error){
+	echo 'Error 01';
+}else{
+	echo 'Connected to '.$mname.'<br>';
+}
+
+
+//diplaying data sql code...
+//candidates||mname
+
+$texp = 0;
+if($mname == 'Candidates'){
+$sql = "SELECT * FROM Candidates ORDER BY Dte DESC";
+
+$result = $conn->query($sql);
+$count = mysqli_num_rows($result);
+
+if($count == true){
+	echo "<table border='1' id='customers'><tr>";
+	
+	echo "<th>ID</th>";
+	echo "<th>Date</th>";
+	echo "<th>Candidate Name</th>";
+	echo "<th>Electrician</th>";
+	echo "<th>Division</th>";
+	echo "<th>40W LED</th>";
+	echo "<th>40W Set</th>";
+	echo "<th>100W Set</th>";
+	echo "<th>200W LED</th>";
+	echo "<th>125W Holder</th>";
+	echo "<th>250W Bulb</th>";
+	echo "<th>250W Choke</th>";
+	echo "<th>250W Igniter</th>";
+	echo "<th>Switch</th>";
+	echo "<th>TOFF</th>";
+	echo "<th>1/1.13 Wire</th>";
+	echo "<th>7/0.53 Wire</th>";
+	echo "<th>Item</th>";
+	echo "<th>Count</th>";
+	echo "<th>Item</th>";
+	echo "<th>Count</th>";
+	echo "<th>Cost</th>";
+	echo "</tr>";
+	
+	while($row = $result->fetch_assoc()){
+		
+		echo "<tr>";
+		echo "<td>ES".$row['index_num']."</td>";
+		echo "<td>".$row['dte']."</td>";
+		echo "<td>".$row['cname']."</td>";
+		echo "<td>".$row['ename']."</td>";
+		echo "<td>".$row['division']."</td>";
+		echo "<td>".$row['led40']."</td>";
+		echo "<td>".$row['set40']."</td>";
+		echo "<td>".$row['set100']."</td>";
+		echo "<td>".$row['led200']."</td>";
+		echo "<td>".$row['holder125']."</td>";
+		echo "<td>".$row['bulb250']."</td>";
+		echo "<td>".$row['choke250']."</td>";
+		echo "<td>".$row['ignitor250']."</td>";
+		echo "<td>".$row['switch5a']."</td>";
+		echo "<td>".$row['toff']."</td>";
+		echo "<td>".$row['wire1']."</td>";
+		echo "<td>".$row['wire7']."</td>";
+		echo "<td>".$row['oname1']."</td>";
+		echo "<td>".$row['oval1']."</td>";	
+		echo "<td>".$row['oname2']."</td>";
+		echo "<td>".$row['oval2']."</td>";	
+		echo "<td>Rs.".$row['rowcost']."</td>";
+		echo "</tr>";
+		$texp += $row['rowcost'];
+	}
+	echo "</table>";
+	
+	
+}else{
+	
+	echo "<br>"."No Records";
+	
+}
+	
+}else{ 
+$sql = "SELECT * FROM $mname ORDER BY Dte DESC";
+
+
+$result = $conn->query($sql);
+$count = mysqli_num_rows($result);
+
+
+if($count == true){
+	
+	echo "<table border='1' id='customers'><tr>";
+	
+	echo "<th>ID</th>";
+	echo "<th>Date</th>";
+	echo "<th>Electrician</th>";
+	echo "<th>Division</th>";
+	echo "<th>40W LED</th>";
+	echo "<th>40W Set</th>";
+	echo "<th>100W Set</th>";
+	echo "<th>200W LED</th>";
+	echo "<th>125W Holder</th>";
+	echo "<th>250W Bulb</th>";
+	echo "<th>250W Choke</th>";
+	echo "<th>250W Igniter</th>";
+	echo "<th>Switch</th>";
+	echo "<th>TOFF</th>";
+	echo "<th>1/1.13 Wire</th>";
+	echo "<th>7/0.53 Wire</th>";
+	echo "<th>Item</th>";
+	echo "<th>Count</th>";
+	echo "<th>Item</th>";
+	echo "<th>Count</th>";
+	echo "<th>Cost</th>";
+	
+	while($row = $result->fetch_assoc()){
+		
+		
+		echo "<tr>";
+		echo "<td>ES".$row['index_num']."</td>";
+		echo "<td>".$row['dte']."</td>";
+		echo "<td>".$row['ename']."</td>";
+		echo "<td>".$row['division']."</td>";
+		echo "<td>".$row['led40']."</td>";
+		echo "<td>".$row['set40']."</td>";
+		echo "<td>".$row['set100']."</td>";
+		echo "<td>".$row['led200']."</td>";
+		echo "<td>".$row['holder125']."</td>";
+		echo "<td>".$row['bulb250']."</td>";
+		echo "<td>".$row['choke250']."</td>";
+		echo "<td>".$row['ignitor250']."</td>";
+		echo "<td>".$row['switch5a']."</td>";
+		echo "<td>".$row['toff']."</td>";
+		echo "<td>".$row['wire1']."</td>";
+		echo "<td>".$row['wire7']."</td>";
+		echo "<td>".$row['oname1']."</td>";
+		echo "<td>".$row['oval1']."</td>";	
+		echo "<td>".$row['oname2']."</td>";
+		echo "<td>".$row['oval2']."</td>";	
+		echo "<td>Rs.".$row['rowcost']."</td>";
+		echo "</tr>";
+		$texp += $row['rowcost'];
+	}
+	echo "</table>";
+}else{
+	echo "<br>"."No Records";
+	
+}
+}
+
+
+if($mname != 'Candidates'){
+
+echo "
+<div id='div2'>
+<center>
+Total Expenditure <br> Rs.".$texp."	
+</center>
+</div>";
+
+$sql2 = "SELECT reservation FROM minister_division_rev WHERE mname='$mname'";
+
+$result2 = $conn->query($sql2);
+$val = $result2->fetch_assoc();
+
+echo "
+<div id='div3'>
+<center>
+Reserved <br> Rs.".$val['reservation']."
+</center>
+</div>";
+
+$rem = $val['reservation']-$texp;
+
+if($texp>$val['reservation']){
+echo "
+<div id='div4' style='background-color:#ce0000;'>
+<center>
+Remainder <br> Rs.".$rem."
+</center>
+</div>";
+}else{
+echo"
+<div id='div4'>
+<center>
+Remainder <br> Rs.".$rem."
+</center>
+</div>";
+}
+
+}
+
+
+echo "<p id='p01'>***NB:- Values in Item colums are not calculated automatically by the system.</p>"; 
+
+
+
+
+
+
+$conn->close();
+?>

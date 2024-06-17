@@ -1,0 +1,54 @@
+<html>
+<head>
+<style>
+td{
+        padding-right:5px;
+        padding-left:5px;
+        font-size:17px;
+        color:white;
+    }
+
+th {
+      background-color: #026580;
+      color: white;
+      font-size:20px;
+      padding-left:10px;
+      padding-right:10px;
+    }
+
+h1{
+    font-size:40px;
+}
+a{
+    color:white;
+    text-decoration:none;
+    
+    font-size:30px;
+}
+a:hover{
+    color:black;
+    font-size:34px;
+    
+}
+div{
+    background-color:black;
+    width:15%;
+    height:5%;
+    text-align:center;
+    border: 5px solid #026580;
+    position:absolute;
+    top:7%;
+    left:50%;
+}
+div:hover{
+    background-color:white;
+    
+}
+td{
+    border-radius:5px;
+}
+</style>
+<title>ComplaintsView</title>
+</head>
+<?php
+error_reporting(E_ALL);

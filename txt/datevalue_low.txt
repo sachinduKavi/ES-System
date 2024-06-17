@@ -1,0 +1,86 @@
+$conn = new mysqli('localhost', 'root', 'root', "$system_name");
+
+if($conn->connect_error){
+	echo "Error";
+}else{
+	echo "Connected to ".$system_name."<br>";
+}
+
+$division = $_POST['bt'];
+
+?>
+
+<body>
+
+<h1><label id='heading'> Error </label></h1>
+
+<table border='3' cellspacing='0'>
+<tr>
+<th>Minister Name</th>
+<th>Days</th>
+<th>Communal Days</th>
+</tr>
+
+<?php
+ 
+$sql_dates = "SELECT * FROM minister_division_rev WHERE division='$division'";
+$result_dates = $conn->query($sql_dates);
+$count_dates = mysqli_num_rows($result_dates);
+$first = true;
+
+if($count_dates == true){
+	while($row_dates = $result_dates->fetch_assoc()){
+		$minister_name = $row_dates['mname'];
+
+		$sql_minister_dte = "SELECT * FROM $minister_name";
+		$result_minister_dte = $conn->query($sql_minister_dte);
+		$count_minster_dte = mysqli_num_rows($result_minister_dte);
+
+		$minister_dte = "";
+		if($count_minster_dte == true){
+			while($row_m_dte = $result_minister_dte->fetch_assoc()){
+				$minister_dte .= substr($row_m_dte['dte'], 5)." /";
+			}
+		}
+
+		echo "<tr>";
+		echo "<td>".str_replace('_', ' ', $minister_name)."</td>";
+		echo "<td>".$minister_dte."</td>";
+		if($first){
+			$sql_communal_d = "SELECT * FROM Candidates WHERE division='$division'";
+			$result_communal = $conn->query($sql_communal_d);
+			$count_communal = mysqli_num_rows($result_communal);
+
+			$communal_dte = "";
+			if($result_communal == true){
+				while($row_communal = $result_communal->fetch_assoc()){
+					$communal_dte .= substr($row_communal['dte'], 5)." /";
+				}
+			}else{
+				$communal_dte = "Empty List";
+			}
+			echo "<td rowspan=$count_dates>".$communal_dte."</td>";
+			$first =  false;
+		}
+
+		echo "</tr>";
+
+	}
+}
+
+
+
+?>
+</tr>
+</table>
+
+<a href='Summary.php'><img src='Image/summary.png' ></a>
+
+</body>
+</html>
+
+<script>
+
+document.getElementById('heading').innerHTML = "<?=$division?>";
+
+</script>

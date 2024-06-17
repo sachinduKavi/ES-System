@@ -1,0 +1,606 @@
+$conn = new mysqli('localhost','root','root', "$system_name");
+
+$year = substr($system_name, -4);
+//Reterving Values from Candidates
+if($division != 'All'){
+    if($division == 'Null'){
+        $sql = "SELECT * FROM Candidates WHERE division='Null' AND dte LIKE '$year-$month-%'";
+    }else{
+        $sql = "SELECT * FROM candidates WHERE division='$division' AND dte LIKE '$year-$month-%'";
+    }
+}else{
+    $sql = "SELECT * FROM candidates WHERE dte LIKE '$year-$month-%'";
+}
+
+if($conn->connect_error){
+    echo "Error 01";
+}else{
+    echo "Connected to ".$system_name;
+}
+$result = $conn->query($sql);
+$count = mysqli_num_rows($result);
+
+if($count == true){
+    $TCount += $count;
+   
+    while($row = $result->fetch_assoc()){
+        $w_dates .= substr($row['dte'], 8)." ";
+        if($row['led40'] >= 5 || $row['led200'] >= 3){
+            $totalCount += 1;
+        }
+        
+        $LED40 += $row['led40'];
+        $Set40 += $row['set40'];
+        $Set100 += $row['set100'];
+        $LED200 += $row['led200'];
+        $Bulb250 += $row['bulb250'];
+        $choke += $row['choke250'];
+        $Igniter += $row['ignitor250'];
+        $Holder += $row['holder125'];
+        $Switch5A += $row['switch5a'];
+        $TOFF += $row['toff'];
+        $Wire1 += $row['wire1'];
+        $Wire7 += $row['wire7'];
+    }
+}
+
+
+
+//Geting Values From Manthree...
+if($division != 'null'){
+if($division != 'All'){
+    $sql02 = "select * from minister_division_rev where division='$division'";
+}else{
+    $sql02 = "select * from minister_division_rev";
+}
+$result02 =$conn->query($sql02);
+
+$count02 = mysqli_num_rows($result02);
+
+if($count02 == true){
+    
+    while($row02 = $result02->fetch_assoc()){
+        
+        $minister = $row02['mname'];
+        $sql03 = "select * from $minister where dte like '$year-$month-%'";
+
+        $result03 = $conn->query($sql03);
+
+        $count03 = mysqli_num_rows($result03);
+
+        if($count03 == true){
+            $TCount += $count03;
+          
+            while($row03 = $result03->fetch_assoc()){
+            $w_dates .= substr($row03['dte'], 8)." ";
+                 if($row03['led40'] >= 5 || $row03['led200'] >= 3){
+                    $totalCount += 1;
+			     }
+			$LED40 += $row03['led40'];
+			$Set40 += $row03['set40'];
+			$Set100 += $row03['set100'];
+			$LED200 += $row03['led200'];
+			$Bulb250 += $row03['bulb250'];
+			$choke += $row03['choke250'];
+			$Igniter += $row03['ignitor250'];
+			$Holder += $row03['holder125'];
+			$Switch5A += $row03['switch5a'];
+			$TOFF += $row03['toff'];
+			$Wire1 += $row03['wire1'];
+			$Wire7 += $row03['wire7'];
+               
+            }
+        }
+
+    }
+}
+}
+//echo $w_dates;
+// Fetching item rates
+$price_list = array();
+
+$sql5 = "SELECT * FROM item_rates";
+
+$result5 = $conn->query($sql5);
+
+$count5 = mysqli_num_rows($result5);
+
+if($count5 == true){
+    while($row5 = $result5->fetch_assoc()){
+        array_push($price_list, $row5['price_rates']);
+    }
+}
+
+?>
+
+<style>
+    h1, h3 {
+        text-align: center;
+        letter-spacing: 1;
+        font-weight: bold;
+    }
+
+    table {
+        margin-left: auto;
+        margin-right: auto;
+        width: 65%;
+    }
+    .ceneter{
+        text-align:center;
+    }
+    #div02{
+        margin-left:auto;
+        margin-right:auto;
+        width:68%;
+        text-align:center;
+
+    }
+    #TO{
+        margin-left:70%;
+        text-align:center;
+    }
+    .leftA{
+        margin-left:5%;
+    }
+    
+</style>
+
+
+
+
+<body>
+
+
+    <h3>MUNICIPAL COUNCIL NEGOMBO</h3>
+    <h1><u>Estimate for Street light Maintanance<br>Electrical-<lable id='yearno'></label></u></h1>
+   
+
+
+    <table>
+        <tr>
+
+        <td>Vote </td><td>: 2103-<label id="voteNo"></label></td>
+        </tr>
+        <tr><td>Department </td><td>: Municipal Engineer</td></tr>
+        <tr><td>Section </td><td>: Electrical</td></tr>
+        <tr><td>Month</td><td>: <lable id="month03">....</lable></td></tr>
+        <tr><td>Division</td><td>: <lable id="division03"></lable></td></tr>
+        <tr><td>Estimate No </td><td>: <lable id="Estimate01">.....</lable></td></tr>
+        <tr><td>Working Days </td><td>: <lable id="workingdays">.....</lable></td></tr>
+        <tr><td>Printed Date </td><td>: <lable id="date01">......</lable></td></tr>
+    </table><br>
+
+    <table border="1" cellspacing="0">
+    <tr>
+    <th>Item<br>NO</th>
+    <th>Quantity</th>
+    <th>Unit</th>
+    <th>Item Of Work</th>
+    <th>Rate(Rs.)</th>
+    <th>Amount(Rs.)</th>
+    </tr>
+
+
+   <tr>
+   <td class="ceneter">01</td>
+   <td class="ceneter"><lable id="01"></lable></td>
+   <td class="ceneter">Nos</td>
+   <td>40W LED Screw Bulb</td>
+   <td class="ceneter"><lable id="P01"></lable></td>
+   <td class="ceneter"><lable id="A01"></lable></td></tr>
+
+   <tr>
+   <td class="ceneter">02</td>
+   <td class="ceneter"><lable id="02"></lable></td>
+   <td class="ceneter">Nos</td>
+   <td>40W LED(Complete Set)</td>
+   <td class="ceneter"><lable id="P02"></lable></td>
+   <td class="ceneter"><lable id="A02"></lable></td></tr>
+
+   <tr>
+   <td class="ceneter">03</td>
+   <td class="ceneter"><lable id="03"></lable></td>
+   <td class="ceneter">Nos</td>
+   <td>100W LED(Complete Set)</td>
+   <td class="ceneter"><lable id="P03"></lable></td>
+   <td class="ceneter"><lable id="A03"></lable></td></tr>
+
+
+   <tr>
+   <td class="ceneter">04</td>
+   <td class="ceneter"><lable id="04"></lable></td>
+   <td class="ceneter">Nos</td>
+   <td>200W LED(Flash Light)</td>
+   <td class="ceneter"><lable id="P04"></lable></td>
+   <td class="ceneter"><lable id="A04"></lable></td></tr>
+
+   <tr>
+   <td class="ceneter">05</td>
+   <td class="ceneter"><lable id="05"></lable></td>
+   <td class="ceneter">Nos</td>
+   <td>250W Bulb</td>
+   <td class="ceneter"><lable id="P05"></lable></td>
+   <td class="ceneter"><lable id="A05"></lable></td></tr>
+
+   <tr>
+   <td class="ceneter">06</td>
+   <td class="ceneter"><lable id="06"></lable></td>
+   <td class="ceneter">Nos</td>
+   <td>250W SV Choke</td>
+   <td class="ceneter"><lable id="P06"></lable></td>
+   <td class="ceneter"><lable id="A06"></lable></td></tr>
+
+   <tr>
+   <td class="ceneter">07</td>
+   <td class="ceneter"><lable id="07" ></lable></td>
+   <td class="ceneter">Nos</td>
+   <td>250W Ignitor</td>
+   <td class="ceneter"><lable id="P07"></lable></td>
+   <td class="ceneter"><lable id="A07"></lable></td></tr>
+
+   <tr>
+   <td class="ceneter">08</td>
+   <td class="ceneter"><lable id="08" ></lable></td>
+   <td class="ceneter">Nos</td>
+   <td>125W Screw Holder</td>
+   <td class="ceneter"><lable id="P08"></lable></td>
+   <td class="ceneter"><lable id="A08"></lable></td></tr>
+
+   <tr>
+   <td class="ceneter">09</td>
+   <td class="ceneter"><lable id="09"></lable></td>
+   <td class="ceneter">Nos</td>
+   <td>5A Switch(Thumbler)</td>
+   <td class="ceneter"><lable id="P09"></lable></td>
+   <td class="ceneter"><lable id="A09"></lable></td></tr>
+
+   <tr>
+   <td class="ceneter">10</td>
+   <td class="ceneter"><lable id="10"></lable></td>
+   <td class="ceneter">Nos</td>
+   <td>T-OFF Connectors</td>
+   <td class="ceneter"><lable id="P10"></lable></td>
+   <td class="ceneter"><lable id="A10"></lable></td></tr>
+
+   <tr>
+   <td class="ceneter">11</td>
+   <td class="ceneter"><lable id="11"></lable></td>
+   <td class="ceneter">Meter</td>
+   <td>1/1.13 Wire (Single)</td>
+   <td class="ceneter"><lable id="P11"></lable></td>
+   <td class="ceneter"><lable id="A11"></lable></td></tr>
+   
+   <tr>
+   <td class="ceneter">12</td>
+   <td class="ceneter"><lable id="12"></lable></td>
+   <td class="ceneter">Meter</td>
+   <td>7/0.53 Wire</td>
+   <td class="ceneter"><lable id="P12"></lable></td>
+   <td class="ceneter"><lable id="A12"></lable></td></tr>
+
+   <tr>
+   <td class="ceneter">13</td>
+   <td class="ceneter">3x<lable id="13"></lable></td>
+   <td class="ceneter">Nos</td>
+   <td>Labour Charge</td>
+   <td class="ceneter">1800.00</td>
+   <td class="ceneter"><lable id="A13"></lable></td></tr>
+
+   <tr>
+   <td class="ceneter">14</td>
+   <td class="ceneter"><lable id="14"></lable></td>
+   <td class="ceneter">Nos</td>
+   <td>Vehicle Charge</td>
+   <td class="ceneter">3000.00</td>
+   <td class="ceneter"><lable id="A14"></lable></td></tr>
+
+   <tr>
+   <th  colspan="5">Overseerage & Contingencies</td>
+   <td></td>
+
+   <tr>
+   <th  colspan="5">Total Amount</td>
+   <th><lable id="Total"></lable></th>
+
+   </table>
+   <br>
+
+   <div id="div02">
+   <p>The estimate for the maintenance of street lights in <lable id="division02">.....</lable> area on <lable id="month02">.....</lable> is Rs.<lable id="price"></lable> and I submit it for approval. </p>
+   </div>
+   <br>
+
+   <div id="TO">
+   <p class="center">.......................................<br>
+   Technical Officer</p>
+   </div>
+   
+
+   <div class="leftA">
+   <p>Recommended By</p>
+   <p class="center">.......................................<br>
+   Municipal Engineer</p>
+   </div>
+
+   <div class="leftA">
+   <p>Approved By</p>
+   <p>.......................................<br>
+   Municipal Commissioner</p>
+   </div>
+
+</body>
+
+</html>
+
+
+<script>
+    var division = "<?=$division?>";
+    var monthID = "<?=$month?>"
+    var today = new Date();
+    var date = today.getUTCFullYear() + "-" + (String(today.getMonth() + 1)).padStart(2, 0) + "-" + String(today.getDate()).padStart(2,"0") ;
+    var car = "car";
+    var NTrip = <?=$totalCount?>;
+
+    var month = (String(today.getMonth() + 1)).padStart(2, 0);
+    
+    var monthS;
+
+    var LED40 = "<?=$LED40?>";
+    var Set40 = "<?=$Set40?>";
+    var Set100 = "<?=$Set100?>";
+    var LED200 = "<?=$LED200?>";
+    var Bulb250 = "<?=$Bulb250?>";
+    var choke = "<?=$choke?>";
+    var Igniter = "<?=$Igniter?>";
+    var Holder = "<?=$Holder?>";
+    var Switch = "<?=$Switch5A?>";
+    var TOFF = "<?=$TOFF?>";
+    var Wire1 = "<?=$Wire1?>";
+	var Wire7 = "<?=$Wire7?>";
+
+
+//month Conerter...
+
+    switch (monthID){
+        case '01': 
+        monthS="January";
+        break;
+        case '02': 
+        monthS="February";
+        break;
+        case '03': 
+        monthS="March";
+        break;
+        case '04': 
+        monthS="April";
+        break;
+        case '05': 
+        monthS="May";
+        break;
+        case '06': 
+        monthS="June";
+        break;
+        case '07': 
+        monthS="July";
+        break;
+        case '08': 
+        monthS="August";
+        break;
+        case '09': 
+        monthS="September";
+        break;
+        case '10': 
+        monthS="October";
+        break;
+        case '11': 
+        monthS="November";
+        break;
+        case '12': 
+        monthS="December";
+        break;
+
+    }
+
+    // division Converter.....
+    var divisionID = null;
+    console.log(division);
+    switch (division){
+
+        case "Kammalthuraya":
+        divisionID='01';
+        break;
+        case "Kochchikade":
+        divisionID='02';
+        break;
+        case "Pallansena South":
+        divisionID='03';
+        break;
+        case "Poruthota":
+        divisionID='04';
+        break;
+        case "Daluwakotuwa East":
+        divisionID='05';
+        break;
+        case "Palangathure":
+        divisionID='06';
+        break;
+        case "Eththukala":
+        divisionID='07';
+        break;
+        case "Kattuwa":
+        divisionID='08';
+        break;
+        case "Dalupotha":
+        divisionID='09';
+        break;
+        case "Dalupotha East":
+        divisionID='10';
+        break;
+        case "Kudapaduwa":
+        divisionID='11';
+        break;
+        case "Kudapaduwa North":
+        divisionID='12';
+        break;
+        case "Wellaweediya North":
+        divisionID='13';
+        break;
+        case "Wellaweediya South":
+        divisionID='14';
+        break;
+        case "Periyamulla":
+        divisionID='15';
+        break;
+        case "Hunupitiya":
+        divisionID='16';
+        break;
+        case "Agurukaramulla":
+        divisionID='17';
+        break;
+        case "Udayarthoppuwa":
+        divisionID='18';
+        break;
+        case "Munnakkaraya":
+        divisionID='19';
+        break;
+        case "Pitipana North":
+        divisionID='20';
+        break;
+        case "Duwa":
+        divisionID='21';
+        break;
+        case "Kadol Uyana":
+        divisionID='22';
+        break;
+        case "Bolawalana":
+        divisionID='23';
+        break;
+        case "Kurana":
+        divisionID='24';
+        break;
+        case "Siriwardene Place":
+        divisionID='25';
+        break;
+        case "South Pitipana East":
+        divisionID='26';
+        break;
+        case "South Pitipana West":
+        divisionID='27';
+        break;
+        case "Thalahena Dungalpitiya":
+        divisionID='28';
+        break;
+        case "Kepungoda":
+        divisionID='29';
+        break;
+        case "Null":
+        divisionID='30';
+        division='Communal';
+        break;
+        case "All":
+        divisionID='ALL';
+        division='All Negombo';
+        console.log("hello2");
+        break;
+        
+
+    }
+     console.log(NTrip);
+     console.log(monthID+" "+monthS);
+     console.log(division+" "+divisionID);
+     console.log("<?=$price_list[0]?>");
+     console.log("<?=$w_dates?>");
+     work_days = "<?=$w_dates?>";
+
+
+    var P_LED40 = "<?=$price_list[0]?>"*1;
+    var P_Set40 = "<?=$price_list[1]?>"*1;
+    var P_Set100 = "<?=$price_list[2]?>"*1;
+    var P_LED200 = "<?=$price_list[3]?>"*1;
+    var P_Bulb250 = "<?=$price_list[4]?>"*1;
+    var P_choke = "<?=$price_list[5]?>"*1;
+    var P_Igniter = "<?=$price_list[6]?>"*1;
+    var P_Holder = "<?=$price_list[7]?>"*1;
+    var P_Switch = "<?=$price_list[8]?>"*1;
+    var P_TOFF = "<?=$price_list[9]?>"*1;
+    var P_Wire1 = "<?=$price_list[10]?>"*1;
+    var P_Wire7 = "<?=$price_list[11]?>"*1;
+
+    var A_LED40 = LED40*P_LED40;
+    var A_Set40 = Set40*P_Set40;
+    var A_Set100 = Set100*P_Set100;
+    var A_LED200 = LED200*P_LED200;
+    var A_Bulb250 = Bulb250*P_Bulb250;
+    var A_choke = choke*P_choke;
+    var A_Igniter = Igniter*P_Igniter;
+    var A_Holder = Holder*P_Holder;
+    var A_Switch = Switch*P_Switch;
+    var A_TOFF = TOFF*P_TOFF;
+    var A_Wire1 = (Wire1*P_Wire1);
+    var A_Wire7 = (Wire7*P_Wire7);
+    var A_labor = NTrip*5400;
+    var A_vehicle = NTrip*3000;
+
+    var total = A_LED40+A_Set40+A_Set100+A_LED200+A_Bulb250+A_choke+A_Igniter+A_Holder+A_Switch+A_TOFF+A_Wire1+A_Wire7+A_labor+A_vehicle;
+
+    document.getElementById('01').innerHTML = LED40;
+    document.getElementById('02').innerHTML = Set40;
+    document.getElementById('03').innerHTML = Set100;
+    document.getElementById('04').innerHTML = LED200;
+    document.getElementById('05').innerHTML = Bulb250;
+    document.getElementById('06').innerHTML = choke;
+    document.getElementById('07').innerHTML = Igniter;
+    document.getElementById('08').innerHTML = Holder;
+    document.getElementById('09').innerHTML = Switch;
+    document.getElementById('10').innerHTML = TOFF;
+    document.getElementById('11').innerHTML = Wire1;
+    document.getElementById('12').innerHTML = Wire7;
+    document.getElementById('13').innerHTML = NTrip;
+    document.getElementById('14').innerHTML = NTrip;
+
+
+    document.getElementById('A01').innerHTML = A_LED40.toFixed(2);
+    document.getElementById('A02').innerHTML = A_Set40.toFixed(2);
+    document.getElementById('A03').innerHTML = A_Set100.toFixed(2);
+    document.getElementById('A04').innerHTML = A_LED200.toFixed(2);
+    document.getElementById('A05').innerHTML = A_Bulb250.toFixed(2);
+    document.getElementById('A06').innerHTML = A_choke.toFixed(2);
+    document.getElementById('A07').innerHTML = A_Igniter.toFixed(2);
+    document.getElementById('A08').innerHTML = A_Holder.toFixed(2);
+    document.getElementById('A09').innerHTML = A_Switch.toFixed(2);
+    document.getElementById('A10').innerHTML = A_TOFF.toFixed(2);
+    document.getElementById('A11').innerHTML = A_Wire1.toFixed(2);
+    document.getElementById('A12').innerHTML = A_Wire7.toFixed(2);
+    document.getElementById('A13').innerHTML = A_labor.toFixed(2);
+    document.getElementById('A14').innerHTML = A_vehicle.toFixed(2);
+   
+    document.getElementById('Total').innerHTML = total.toFixed(2);
+    document.getElementById('price').innerHTML = total.toFixed(2);
+
+    document.getElementById("date01").innerHTML = date;
+    document.getElementById("Estimate01").innerHTML = "ES"+"<?=$system_name?>".slice(-4)+monthID+divisionID;
+    document.getElementById("division02").innerHTML = division;
+    document.getElementById("division03").innerHTML = division;
+    document.getElementById("month02").innerHTML = monthS;
+    document.getElementById("month03").innerHTML = monthS;
+    document.getElementById("workingdays").innerHTML = "<?=$system_name?>".slice(-4)+"/"+monthID+"/"+work_days;
+    document.getElementById("yearno").innerHTML = "<?=$system_name?>".slice(-4);
+    document.getElementById("voteNo").innerHTML = divisionID;
+
+    document.getElementById('P01').innerHTML = P_LED40.toFixed(2);
+    document.getElementById('P02').innerHTML = P_Set40.toFixed(2);
+    document.getElementById('P03').innerHTML = P_Set100.toFixed(2);
+    document.getElementById('P04').innerHTML = P_LED200.toFixed(2);
+    document.getElementById('P05').innerHTML = P_Bulb250.toFixed(2);
+    document.getElementById('P06').innerHTML = P_choke.toFixed(2);
+    document.getElementById('P07').innerHTML = P_Igniter.toFixed(2);
+    document.getElementById('P08').innerHTML = P_Holder.toFixed(2);
+    document.getElementById('P09').innerHTML = P_Switch.toFixed(2);
+    document.getElementById('P10').innerHTML = P_TOFF.toFixed(2);
+    document.getElementById('P11').innerHTML = P_Wire1.toFixed(2);
+    document.getElementById('P12').innerHTML = P_Wire7.toFixed(2);
+
+
+    
+  
+</script>

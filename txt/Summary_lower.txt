@@ -1,0 +1,288 @@
+$conn = new mysqli('localhost','root','root',"$system_name");
+
+$AllCom = 0;
+
+//cheak connection
+if($conn ->connect_error){
+	echo "Error 01";
+}else{
+	echo "Connected to ".$system_name."<br>Print Date : <label id='date'></label>";
+}
+
+    
+    ?>
+
+</head>
+<body>
+
+<h1 id='summ'>Summary...</h1>
+
+    <table border='1' cellspacing='0'>
+    <tr>
+    <th>ID</th>
+    <th>Division</th>
+    <th>Minister Name</th>
+    <th>Reservation</th>
+    <th>Expenditure</th>
+    <th>Remainder</th>
+    <th>Precentage</th>
+    <th>Total-M</th>
+    <th>Communal</th>
+    <th>Divisional Exp</th>
+    <th>Trips</th>
+    <th>Btn</th>
+    </tr>
+
+
+    
+   <?php
+    $total_reservation = 0;
+    $total_expenditure = 0;
+    $total_remainder = 0;
+    $total_communal = 0;
+    $division_num = 0;
+    $minister_num = 0;
+    $list = array();
+    $sql = "SELECT DISTINCT division FROM minister_division_rev";
+    $result = $conn->query($sql);
+    $wdays = "";
+    $total_division_exp = 0;
+    $total_alldivision_days = 0;
+    $all_divisions = array();
+
+    $count = mysqli_num_rows($result);
+    if($count ==  true){
+     
+        while($row = $result->fetch_assoc()){
+            $first = true;
+            $division = $row['division'];
+            $division_exp = 0;
+            array_push($all_divisions, $division);
+            // Fetching minister from division
+            $sql_m = "SELECT * FROM minister_division_rev WHERE division='$division'";
+            $result_m = $conn->query($sql_m);
+
+            $count_m = mysqli_num_rows($result_m);
+            if($count_m == true){
+                while($row_m = $result_m->fetch_assoc()){
+                $wdays = "";
+                    $minister_num += 1;
+                    echo "<tr>";
+                    if($first){
+                    $division_num += 1;
+                        echo "<td rowspan='$count_m' align='center' class='c$division_num'><b>".$division_num."</b></td>";
+                        echo "<td rowspan='$count_m' class='c$division_num'>".$division."</td>";
+                        
+                    }
+                    $minister_name = $row_m['mname']; 
+                    echo "<td class='s$minister_num c$division_num'>".str_replace('_', ' ', $minister_name)."</td>";
+                    echo "<td align='right' class='s$minister_num c$division_num'>Rs. ".number_format($row_m['reservation'])."</td>";
+
+                    // Fetching Expenditure 
+                    $sql_e = "SELECT * FROM $minister_name";
+                    $result_e = $conn->query($sql_e);
+
+                    $count_e = mysqli_num_rows($result_e);
+                    $total_c = 0;
+                    if($count_e == true){
+                        while($row_e = $result_e->fetch_assoc()){
+                            $total_c += $row_e['rowcost'];
+                            $wdays .= str_replace("-", '/', substr($row_e['dte'], 5))." ";
+                        }
+                    }
+                    echo "<td align='right' class='s$minister_num c$division_num'>Rs. ".number_format($total_c)."</td>";
+                    $total_expenditure += $total_c;
+                    $reservation = $row_m['reservation'];
+                    $total_reservation += $reservation;
+                    $rem = $reservation-$total_c;
+                    echo "<td align='right' class='s$minister_num c$division_num'>Rs. ".number_format($rem)."</td>";
+                    $total_remainder += $rem;
+                    if($rem < 0){
+                       array_push($list, $minister_num);
+                    }
+
+                    
+                    // Calculating prcentage
+                    $precentage = (100*$total_c)/$reservation;
+                    echo "<td align='center' class='s$minister_num c$division_num'>".round($precentage, 2). " %</td>";
+
+                    // Calculating total minister Expenditure
+                    if($first){
+                        $all_minister_exp = 0;
+                        $sql_me = "SELECT * FROM minister_division_rev WHERE division='$division'";
+                        $result_me = $conn->query($sql_me);
+                        $count_me = mysqli_num_rows($result_me);
+
+                        if($count_me == true){
+                            while($row_me = $result_me->fetch_assoc()){
+                                $min_name = $row_me['mname'];
+                                $sql_expi = "SELECT * FROM $min_name";
+                                $result_expi = $conn->query($sql_expi);
+                                $count_expi = mysqli_num_rows($result_expi);
+
+                                if($count_expi ==true){
+                                    while($expi = $result_expi->fetch_assoc()){
+                                        $all_minister_exp += $expi['rowcost'];
+                                    }
+                                }
+                            }
+                        }
+
+                        echo "<td align='right' rowspan='$count_m' class='c$division_num'>Rs. ".number_format($all_minister_exp). "</td>";
+                    }
+
+                    // Fetching data from candidates
+                    if($first){
+                        $sql_communal = "SELECT * FROM Candidates WHERE division='$division'";
+                        $result_communal = $conn->query($sql_communal);
+                        $communal_cost = 0;
+                        $count_communal = mysqli_num_rows($result_communal);
+                        if($count_communal == true){
+                            while($row_communal = $result_communal->fetch_assoc()){
+                                $communal_cost += $row_communal['rowcost'];
+                            }
+                        }
+                        
+                        echo "<td align='right' rowspan='$count_m' class='c$division_num'>Rs. ".number_format($communal_cost)."</td>";
+                        $total_communal += $communal_cost;
+                    }
+                    //total expenditure
+                    if($first){
+                        echo "<td align='right' rowspan='$count_m' class='c$division_num'>Rs. ".number_format($communal_cost+$all_minister_exp)."</td>";
+                        $total_division_exp += $communal_cost+$all_minister_exp;
+                    }
+                    
+                    // Fetching num of days 
+                    if($first){
+                        $total_days = 0;
+                        $sql_days = "SELECT * FROM Candidates WHERE division='$division'";
+                        $result_days = $conn->query($sql_days);
+
+                        $total_days += mysqli_num_rows($result_days);
+                        
+
+                        $sql_minister01 = "SELECT * FROM minister_division_rev WHERE division='$division'";
+                        $result_minister01 = $conn->query($sql_minister01);
+                        $count_minister01 = mysqli_num_rows($result_minister01);
+
+                        if($count_minister01 == true){
+                            while($row_minister01 = $result_minister01->fetch_assoc()){
+                                $minister01 = $row_minister01['mname'];
+
+                                $sql_days01 = "SELECT * FROM $minister01";
+                                $result_days01 = $conn->query($sql_days01);
+
+                                $total_days += mysqli_num_rows($result_days01);
+                            }
+                        }
+                        
+                        echo "<td align='center' rowspan='$count_m' class='c$division_num'><font size='4'><b>".$total_days."  </b></font></td>";
+                        $total_alldivision_days += $total_days;
+                        $first = false;
+
+                        echo"<form method='post' action='dateValue.php'>";
+                        echo "<td align=''center' rowspan='$count_m' class='c$division_num'> <button id='b01' name='bt' value='$division'><img src='Image/i.png' width='15px'></button></td>";
+                        echo "</form>";
+                    }
+
+                }
+            }
+            
+        }
+    }
+    // Fetching values from other (null)
+    $communal_null = 0;
+    $sql_null = "SELECT * FROM Candidates where division='Null'";
+    $result_null = $conn->query($sql_null);
+
+    $count_null = mysqli_num_rows($result_null);
+    if($count_null == true){
+        while($row_null = $result_null->fetch_assoc()){
+            $communal_null += $row_null['rowcost'];
+        }
+    }
+    // Null days
+    $null_days = 0;
+    $sql_nulldays = "SELECT * FROM Candidates WHERE division='Null'";
+    $result_nulldays = $conn->query($sql_nulldays);
+    $count_nulldays = mysqli_num_rows($result_nulldays);
+
+    if($count_nulldays == true){
+        $null_days = $count_nulldays;
+    }
+
+    ?>
+
+    </tr>
+    <tr>
+    <td class='division' align='center'><b>30</b></td>
+    <td class='division' colspan='7'>Other</td>
+    <td align='right'>Rs. <label id='communalNull'>Error</label></td>
+    <td class='division'></td>
+    <td align='center'><label id='nulldays'>Error</label></td>
+    <td class='total' rowspan='2'></td>
+
+    </tr>
+    <tr>
+    <th colspan='3'>Total :-</th>
+    
+    <td align='right' class='total'>Rs. <label id='reservation'>Error</label></td>
+    <td align='right' class='total'>Rs. <label id='expenditure'>Error</label></td>
+    <td align='right' class='total'>Rs. <label id='remainder'>Error</label></td>
+    <td align='center' class='total' colspan='2'>--</td>
+    <td align='right' class='total'>Rs. <label id='communal'>Error</label></td>
+    <td align='right' class='total'>Rs. <label id='all_division_exp'>Error</label></td>
+    <td align='center' class='total'><label id='totaldays'>Error</label></td>
+    
+   
+    </tr>
+</table>
+</body>
+</html>
+
+
+<script>
+var division_list = <?php echo json_encode($all_divisions); ?>;
+console.log(division_list);
+function fn(x){
+    console.log(division_list[x-1]);
+    div_name = division_list[x-1];
+    <?php
+    echo "document.write(div_name);";
+    ?>
+}
+
+var today = new Date();
+var date = today.getUTCFullYear() + "-" + (String(today.getMonth() + 1)).padStart(2, 0) + "-" + String(today.getDate()).padStart(2,"0") ;
+
+document.getElementById('expenditure').innerHTML = "<?=number_format($total_expenditure)?>";
+document.getElementById('remainder').innerHTML = "<?=number_format($total_remainder)?>";
+document.getElementById('communal').innerHTML = "<?=number_format($total_communal+$communal_null)?>";
+document.getElementById('communalNull').innerHTML = "<?=number_format($communal_null)?>";
+document.getElementById('reservation').innerHTML = "<?=number_format($total_reservation)?>";
+document.getElementById('date').innerHTML = date;
+document.getElementById('nulldays').innerHTML = <?=$null_days?>;
+document.getElementById('totaldays').innerHTML = <?=$total_alldivision_days + $null_days?>;
+document.getElementById('all_division_exp').innerHTML = "<?=number_format($total_division_exp)?>";
+
+for(var num = 1;num < 30; num++){
+    if(num%2 == 0){
+        var x = document.getElementsByClassName("c"+num.toString());
+        var i;
+        for (i = 0; i < x.length; i++) {
+          x[i].style.backgroundColor = "#dbf4f1";
+        }
+    }
+}
+
+var num_list = <?php echo json_encode($list); ?>;
+console.log(num_list);
+for(var i in num_list){
+    console.log(num_list[i]);
+        var x = document.getElementsByClassName("s"+num_list[i].toString());
+        for (var j = 0; j < x.length; j++) {
+          x[j].style.backgroundColor = "red";
+          x[j].style.color = "white";
+          }
+}
+</script>

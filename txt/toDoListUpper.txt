@@ -1,0 +1,84 @@
+<html>
+<head>
+<style>
+td{
+        padding-right:5px;
+        padding-left:5px;
+        font-size:17px;
+        color:white;
+    }
+
+th {
+      background-color: #026580;
+      color: white;
+      font-size:20px;
+      padding-left:10px;
+      padding-right:10px;
+    }
+
+h1{
+    font-size:40px;
+}
+a{
+    color:white;
+    text-decoration:none;
+    
+    font-size:30px;
+}
+a:hover{
+    color:black;
+    font-size:34px;
+    
+}
+#div1{
+    background-color:black;
+    width:15%;
+    height:5%;
+    text-align:center;
+    border: 5px solid #026580;
+    position:absolute;
+    top:7%;
+    left:50%;
+}
+#div1:hover{
+    background-color:white;
+    
+}
+#div2{
+    position:absolute;
+    top:7%;
+    left:74%;
+}
+#btn{
+    position:absolute;
+    top:7%;
+    left:68%;
+    border-radius:100%;
+}
+img{
+    border-radius:25px;
+}
+#dropzone{
+    color:white;
+    background-color:#139625;
+    font-size:16px;
+    padding:12px;
+    border-radius:20px;
+}
+td{
+    border-radius:5px;
+}
+input[type='submit']{
+background-color: #4CAF50;
+  border:none;
+  color: white;
+  padding:12px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  }  
+</style>
+<title>ComplaintsView</title>
+</head>
+<?php
+error_reporting(E_ALL);
